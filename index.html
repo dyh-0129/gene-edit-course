@@ -8,8 +8,8 @@
     :root {
       --primary: #1a2980;
       --secondary: #26d0ce;
-      --glass: #ffffff;
-      --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+      --glass: rgba(255, 255, 255, 0.85);
+      --shadow: 0 10px 30px rgba(31, 38, 135, 0.15);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,11 +19,42 @@
       color: #333; line-height: 1.6; min-height: 100vh;
     }
 
-    /* 导航栏 */
+    /* ===== 导览页面 ===== */
+    .guide-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+      z-index: 1000; display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    .guide-slide {
+      text-align: center; color: white; padding: 40px; max-width: 800px;
+      animation: fadeIn 0.8s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .guide-slide h1 { font-size: 3.5em; margin-bottom: 25px; font-weight: 700; }
+    .guide-slide p { font-size: 1.4em; margin-bottom: 35px; opacity: 0.9; }
+    .enter-btn {
+      background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);
+      padding: 16px 45px; font-size: 1.2em; border-radius: 35px; cursor: pointer;
+      transition: all 0.3s ease; backdrop-filter: blur(10px);
+    }
+    .enter-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); }
+
+    .guide-dots {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 15px;
+    }
+    .dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.3s ease; }
+    .dot.active { background: white; transform: scale(1.2); }
+
+    /* ===== 导航栏 ===== */
     .navbar {
       position: fixed; top: 0; left: 0; width: 100%; background: var(--glass);
-      box-shadow: var(--shadow); z-index: 999; padding: 0 20px;
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      backdrop-filter: blur(12px); box-shadow: var(--shadow); z-index: 999;
+      padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.3);
     }
     .nav-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 70px; }
     .nav-logo { font-size: 1.6em; font-weight: 700; color: var(--primary); margin-right: 50px; }
@@ -31,13 +62,13 @@
     .nav-link { text-decoration: none; color: #5f6368; font-weight: 500; padding: 10px 0; cursor: pointer; transition: color 0.3s; }
     .nav-link:hover { color: var(--primary); }
 
-    /* 下拉菜单（白色不透明） */
+    /* ===== 下拉菜单（位置修正） ===== */
     .dropdown {
       position: absolute; top: 100%; left: 0; background: #ffffff;
       box-shadow: var(--shadow); border-radius: 12px; padding: 12px 0;
       min-width: 270px; opacity: 0; visibility: hidden;
       transform: translateY(10px); transition: all 0.3s ease;
-      border: 1px solid #eee; z-index: 1001;
+      border: 1px solid #eee; z-index: 1001; transform-origin: top left;
     }
     .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateY(0); }
     .dropdown-item {
@@ -50,12 +81,12 @@
       border-left: 3px solid var(--primary); padding-left: 28px;
     }
 
-    /* 页面容器 */
+    /* ===== 主内容 ===== */
     .main-content { margin-top: 90px; padding: 30px 20px; }
     .container {
-      max-width: 900px; margin: 0 auto; background: #ffffff;
-      border-radius: 16px; box-shadow: var(--shadow);
-      padding: 40px; border: 1px solid #eee;
+      max-width: 900px; margin: 0 auto; background: var(--glass);
+      backdrop-filter: blur(10px); border-radius: 16px; box-shadow: var(--shadow);
+      padding: 40px; border: 1px solid rgba(255, 255, 255, 0.3);
     }
     .chapter-title {
       font-size: 2.5em; color: var(--primary); margin-bottom: 25px;
@@ -67,16 +98,7 @@
     .content-text { margin-bottom: 20px; text-align: justify; color: #444; }
     .video-container { margin: 30px 0; text-align: center; }
 
-    /* 答题按钮 */
-    .quiz-button {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      color: #fff; border: none; padding: 14px 30px; border-radius: 30px;
-      cursor: pointer; font-size: 1.05em; margin: 30px auto 0; display: block;
-      transition: all 0.3s ease; box-shadow: 0 5px 15px rgba(26, 41, 128, 0.2);
-    }
-    .quiz-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26, 41, 128, 0.3); }
-
-    /* 答题选项动画 */
+    /* ===== 答题动画 ===== */
     .quiz-options li {
       padding: 14px; margin: 8px 0; background: #eef2ff; border-radius: 8px;
       cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent;
@@ -87,18 +109,30 @@
       color: #fff; border-color: transparent;
     }
 
-    /* 结果页 */
+    /* ===== 结果页 ===== */
     .result-buttons { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
     .result-btn { padding: 12px 25px; border: none; border-radius: 25px; cursor: pointer; font-size: 1em; transition: all 0.3s; }
     .retry-btn { background: var(--primary); color: #fff; }
     .next-btn { background: #00c853; color: #fff; }
 
-    /* 问答区 */
+    /* ===== 问答区 ===== */
     .qa-input { width: 100%; min-height: 120px; padding: 15px; border: 1px solid #ccc; border-radius: 12px; font-size: 1em; resize: vertical; background: #fafafa; }
     .qa-submit { margin-top: 15px; padding: 12px 25px; background: linear-gradient(to right, var(--primary), var(--secondary)); color: #fff; border: none; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; }
     .qa-response { margin-top: 20px; padding: 20px; background: #f7f9ff; border-radius: 12px; display: none; line-height: 1.8; }
 
-    /* 页面切换 */
+    /* ===== 主页卡片动画 ===== */
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
+    .feature-card {
+      background: var(--glass); backdrop-filter: blur(5px); border-radius: 16px;
+      padding: 30px; text-align: center; box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer;
+      transition: all 0.4s ease;
+    }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); }
+    .feature-icon { font-size: 2.5em; margin-bottom: 15px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .feature-title { font-size: 1.3em; margin-bottom: 10px; color: var(--primary); }
+
+    /* ===== 页面切换 ===== */
     .page { display: none; }
     .page.active { display: block; animation: fadeIn 0.5s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -106,8 +140,53 @@
 </head>
 <body>
 
+<!-- 导览页面 -->
+<div class="guide-container" id="guideContainer">
+  <div class="guide-slide" id="guideSlide1">
+    <h1>🧬 基因编辑科普课程</h1>
+    <p>探索生命科学的奥秘，了解基因编辑技术的原理与应用</p>
+    <div class="guide-dots">
+      <span class="dot active" onclick="showSlide(1)"></span>
+      <span class="dot" onclick="showSlide(2)"></span>
+      <span class="dot" onclick="showSlide(3)"></span>
+      <span class="dot" onclick="showSlide(4)"></span>
+    </div>
+  </div>
+  <div class="guide-slide" id="guideSlide2" style="display: none;">
+    <h1>🔬 技术原理详解</h1>
+    <p>从ZFN到CRISPR，了解基因编辑工具的发展历程</p>
+    <div class="guide-dots">
+      <span class="dot" onclick="showSlide(1)"></span>
+      <span class="dot active" onclick="showSlide(2)"></span>
+      <span class="dot" onclick="showSlide(3)"></span>
+      <span class="dot" onclick="showSlide(4)"></span>
+    </div>
+  </div>
+  <div class="guide-slide" id="guideSlide3" style="display: none;">
+    <h1>🌍 应用场景广泛</h1>
+    <p>医疗、农业、科研...基因编辑如何改变我们的生活</p>
+    <div class="guide-dots">
+      <span class="dot" onclick="showSlide(1)"></span>
+      <span class="dot" onclick="showSlide(2)"></span>
+      <span class="dot active" onclick="showSlide(3)"></span>
+      <span class="dot" onclick="showSlide(4)"></span>
+    </div>
+  </div>
+  <div class="guide-slide" id="guideSlide4" style="display: none;">
+    <h1>🎯 开始您的学习之旅</h1>
+    <p>点击下方按钮，进入正式课程</p>
+    <button class="enter-btn" onclick="enterMain()">进入课程</button>
+    <div class="guide-dots">
+      <span class="dot" onclick="showSlide(1)"></span>
+      <span class="dot" onclick="showSlide(2)"></span>
+      <span class="dot" onclick="showSlide(3)"></span>
+      <span class="dot active" onclick="showSlide(4)"></span>
+    </div>
+  </div>
+</div>
+
 <!-- 导航栏 -->
-<nav class="navbar">
+<nav class="navbar" id="navbar" style="display: none;">
   <div class="nav-content">
     <div class="nav-logo">🧬 基因编辑课程</div>
     <ul class="nav-menu">
@@ -128,7 +207,7 @@
 </nav>
 
 <!-- 主内容 -->
-<div class="main-content">
+<div class="main-content" id="mainContent" style="display: none;">
   <!-- 主页 -->
   <div id="homePage" class="container page active">
     <h1 style="font-size: 2.5em; text-align: center; margin-bottom: 20px; background: linear-gradient(to right, #1a2980, #26d0ce); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">欢迎来到基因编辑科普课程</h1>
@@ -278,7 +357,7 @@ const courseData = {
   5: {
     title: "第五章 基因编辑的未来展望与挑战",
     content: `<div class="section-title">技术升级方向</div><div class="content-text">• 新型工具：Cas14酶体积更小，可进入更微小细胞结构<br>• 引导编辑技术：结合gRNA与逆转录酶，实现精准插入/替换</div>
-      <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=299797100&bvid=BV1JF411V7FA&cid=740330356&p=1" scrolling="no" border="0" frameframeborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
+      <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=299797100&bvid=BV1JF411V7FA&cid=740330356&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
 
       <div class="section-title">跨界融合趋势</div>
       <div class="content-text">• 基因编辑+AI：AI辅助设计gRNA，提高定位精准度<br>• 合成生物学：设计"人工细胞"合成药物、降解污染物</div>
@@ -296,6 +375,23 @@ const courseData = {
 function hideAllPages() {
   const pages = ['homePage', 'chapterPage', 'quizPage', 'resultPage', 'qaPage'];
   pages.forEach(id => document.getElementById(id).classList.remove('active'));
+}
+
+function showSlide(n) {
+  document.querySelectorAll('.guide-slide').forEach(slide => slide.style.display = 'none');
+  document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+  document.getElementById(`guideSlide${n}`).style.display = 'block';
+  document.querySelectorAll('.dot')[n - 1].classList.add('active');
+}
+
+function enterMain() {
+  document.getElementById('guideContainer').style.opacity = '0';
+  setTimeout(() => {
+    document.getElementById('guideContainer').style.display = 'none';
+    document.getElementById('navbar').style.display = 'block';
+    document.getElementById('mainContent').style.display = 'block';
+    showHome();
+  }, 500);
 }
 
 function showHome() {
@@ -441,6 +537,18 @@ async function submitQuestion() {
     responseDiv.innerHTML = `<h3>出错</h3><p>无法获取回答，请检查网络或API Key。</p>`;
   }
 }
+
+// 自动轮播导览页
+let currentSlide = 1;
+setInterval(() => {
+  if (currentSlide < 4) {
+    currentSlide++;
+    showSlide(currentSlide);
+  } else {
+    currentSlide = 1;
+    showSlide(currentSlide);
+  }
+}, 4000);
 
 </script>
 </body>
