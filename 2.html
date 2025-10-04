@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>基因编辑科普课程 | Kimi AI 增强版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --primary: #1a2980;
+      --secondary: #26d0ce;
+      --glass: rgba(255, 255, 255, 0.55);
+      --shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      background: linear-gradient(135deg, #e0e7ff 0%, #d6e4ff 100%);
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ===== 导航栏 ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      z-index: 999;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 70px;
+    }
+
+    .nav-logo {
+      font-size: 1.6em;
+      font-weight: 700;
+      color: var(--primary);
+      margin-right: 50px;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 35px;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #5f6368;
+      font-weight: 500;
+      padding: 10px 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    /* ===== 下拉菜单（修复定位） ===== */
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      border-radius: 12px;
+      padding: 12px 0;
+      min-width: 270px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transform-origin: top left;
+      z-index: 1001;
+    }
+
+    .nav-item:hover .dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .dropdown-item {
+      padding: 14px 25px;
+      color: #5f6368;
+      text-decoration: none;
+      display: block;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+
+    .dropdown-item:hover {
+      background: rgba(26, 41, 128, 0.05);
+      color: var(--primary);
+      border-left: 3px solid var(--primary);
+      padding-left: 28px;
+    }
+
+    /* ===== 页面容器 ===== */
+    .main-content {
+      margin-top: 90px;
+      padding: 30px 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .chapter-title {
+      font-size: 2.5em;
+      color: var(--primary);
+      margin-bottom: 25px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-title {
+      font-size: 1.6em;
+      color: var(--secondary);
+      margin: 30px 0 15px;
+      font-weight: 600;
+      position: relative;
+      padding-left: 15px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 70%;
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      border-radius: 3px;
+    }
+
+    .content-text {
+      margin-bottom: 20px;
+      text-align: justify;
+      color: #444;
+    }
+
+    .video-container {
+      margin: 30px 0;
+      text-align: center;
+    }
+
+    .quiz-button {
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: #fff;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1.05em;
+      margin: 30px auto 0;
+      display: block;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(26, 41, 128, 0.2);
+    }
+
+    .quiz-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(26, 41, 128, 0.3);
+    }
+
+    /* ===== 问答区域 ===== */
+    .qa-input {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 1em;
+      resize: vertical;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .qa-submit {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .qa-response {
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      display: none;
+      line-height: 1.8;
+    }
+
+    /* ===== feature 卡片 ===== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: var(--glass);
+      backdrop-filter: blur(5px);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .feature-title {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    /* ===== 页面切换 ===== */
+    .page { display: none; }
+    .page.active { display: block; animation: fadeIn 0.5s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<!-- 导航栏 -->
+<nav class="navbar">
+  <div class="nav-content">
+    <div class="nav-logo">🧬 基因编辑课程</div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a class="nav-link" onclick="showHome()">主页</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link">课程导览</a>
+        <div class="dropdown">
+          <a class="dropdown-item" onclick="showChapter(1)">第一章：基因编辑入门</a>
+          <a class="dropdown-item" onclick="showSection(2, 1)">2.1 ZFN技术</a>
+          <a class="dropdown-item" onclick="showSection(2, 2)">2.2 TALEN技术</a>
+          <a class="dropdown-item" onclick="showSection(2, 3)">2.3 CRISPR-Cas9技术</a>
+          <a class="dropdown-item" onclick="showSection(2, 4)">2.4 技术升级方向</a>
+          <a class="dropdown-item" onclick="showChapter(3)">第三章：应用场景</a>
+          <a class="dropdown-item" onclick="showChapter(4)">第四章：伦理与安全</a>
+          <a class="dropdown-item" onclick="showChapter(5)">第五章：未来展望</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="showQA()">智能问答</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- 主内容 -->
+<div class="main-content">
+  <!-- 主页 -->
+  <div id="homePage" class="container page active">
+    <h1 style="font-size: 2.5em; text-align: center; margin-bottom: 20px; background: linear-gradient(to right, #1a2980, #26d0ce); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">欢迎来到基因编辑科普课程</h1>
+    <p style="text-align: center; color: #666; margin-bottom: 40px;">深入了解基因编辑技术的原理、应用与未来发展</p>
+    <div class="feature-grid">
+      <div class="feature-card" onclick="showChapter(1)">
+        <div class="feature-icon">📚</div>
+        <div class="feature-title">系统化课程</div>
+        <p>从基础概念到前沿技术，全面覆盖基因编辑知识体系</p>
+      </div>
+      <div class="feature-card" onclick="startQuizFromHome()">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">互动学习</div>
+        <p>每章配有练习题，巩固学习成果</p>
+      </div>
+      <div class="feature-card" onclick="showQA()">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">AI问答</div>
+        <p>智能助手为您解答基因编辑相关问题</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 章节内容 -->
+  <div id="chapterPage" class="container page">
+    <h1 class="chapter-title" id="chapterTitle"></h1>
+    <div id="chapterContent"></div>
+    <div class="video-container" id="videoContainer"></div>
+    <button class="quiz-button" onclick="startQuiz()">开始答题</button>
+  </div>
+
+  <!-- 答题页 -->
+  <div id="quizPage" class="container page">
+    <h1 class="chapter-title">章节测试</h1>
+    <div id="quizContent"></div>
+    <button class="quiz-button" onclick="submitQuiz()">提交答案</button>
+  </div>
+
+  <!-- 结果页 -->
+  <div id="resultPage" class="container page">
+    <h1 class="chapter-title">测试结果</h1>
+    <div class="score" id="scoreDisplay" style="font-size:3em; text-align:center; margin-bottom:20px;"></div>
+    <div id="resultDetails"></div>
+    <div class="result-buttons">
+      <button class="result-btn retry-btn" onclick="retryQuiz()">重新答题</button>
+      <button class="result-btn next-btn" onclick="nextChapter()">学习下一章</button>
+    </div>
+  </div>
+
+  <!-- 智能问答 -->
+  <div id="qaPage" class="container page">
+    <h1 class="chapter-title">智能问答（Kimi AI）</h1>
+    <textarea class="qa-input" id="questionInput" placeholder="请输入您关于基因编辑的问题..."></textarea>
+    <button class="qa-submit" onclick="submitQuestion()">提交问题</button>
+    <div class="qa-response" id="qaResponse"></div>
+  </div>
+</div>
+
+<script>
+// ===== 配置 =====
+const MOONSHOT_API_KEY = '你的key'; // ← 申请：https://platform.moonshot.cn/
+
+// ===== 数据 =====
+const courseData = {
+  1: {
+    title: "第一章 基因编辑入门：从'生命密码'到技术演进",
+    content: `
+      <div class="section-title">基因与DNA的关系</div>
+      <div class="content-text">DNA是承载遗传信息的大分子，基因是DNA上控制生物性状的特定片段。就像手机系统代码决定手机功能一样，基因差异决定了生物差异。</div>
+      <div class="section-title">基因编辑的定义</div>
+      <div class="content-text">基因编辑是通过技术手段对基因序列进行"修改、删除、插入"的精准操作，本质是调整遗传信息。相比传统杂交育种，基因编辑如同光标定位修改文档，更加精准。</div>
+      <div class="section-title">技术发展历程</div>
+      <div class="content-text">• 1970年代：限制性内切酶（初代剪刀）<br>• 2000年代：ZFN/TALEN技术（进阶剪刀）<br>• 2012年：CRISPR-Cas9技术（智能剪刀）</div>
+    `,
+    video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=464164346&bvid=BV1dL411u7DW&cid=441171372&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+    questions: [
+      {
+        question: "文中用'生命说明书'比喻的是下列哪种物质？",
+        options: ["A. 基因", "B. DNA", "C. 蛋白质", "D. 染色体"],
+        answer: 1,
+        explanation: "第一章明确提到'用生命说明书比喻DNA，说明其是承载遗传信息的大分子'"
+      },
+      {
+        question: "下列关于基因编辑与传统杂交育种的区别，说法正确的是？",
+        options: ["A. 两者都依赖自然基因重组", "B. 基因编辑可精准修改基因，杂交育种效率更低", "C. 杂交育种能直接修改基因序列，基因编辑不能", "D. 两者操作成本与难度一致"],
+        answer: 1,
+        explanation: "第一章指出基因编辑是'精准修改基因序列'，传统杂交育种'依赖自然基因重组、效率低'"
+      }
+    ]
+  },
+  2: {
+    1: {
+      title: "2.1 ZFN技术：基因编辑的'早期成熟工具'",
+      content: `<div class="section-title">核心原理</div><div class="content-text">由“锌指蛋白”和“核酸酶”组成，锌指蛋白负责识别并结合目标基因位点（类似“定位器”），核酸酶负责切断该位点的DNA（类似“剪刀”）。</div>`,
+      video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=113623577920364&bvid=BV1VmqTYyEfc&cid=31341020777&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+      questions: [{ question: "ZFN技术的组成部分不包括下列哪一项？", options: ["A. 锌指蛋白", "B. 核酸酶", "C. 向导RNA（gRNA）", "D. 目标基因识别组件"], answer: 2, explanation: "ZFN由锌指蛋白和核酸酶组成，gRNA是CRISPR的组件" }]
+    },
+    2: {
+      title: "2.2 TALEN技术：基因编辑的'精准进阶工具'",
+      content: `<div class="section-title">核心原理</div><div class="content-text">由“TALE蛋白”和“核酸酶”构成，TALE蛋白的氨基酸序列与基因序列存在明确对应关系，可精准识别目标基因。</div>`,
+      video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=912347871&bvid=BV1NM4y1n7W4&cid=1165656905&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+      questions: [{ question: "TALEN技术中，与基因序列存在'明确对应关系'的组件是？", options: ["A. 核酸酶", "B. TALE蛋白", "C. 锌指蛋白", "D. Cas9酶"], answer: 1, explanation: "TALE蛋白的氨基酸序列与基因序列存在明确对应关系" }]
+    },
+    3: {
+      title: "2.3 CRISPR-Cas9技术：基因编辑的'明星工具'",
+      content: `<div class="section-title">核心原理</div><div class="content-text">采用“向导RNA（gRNA）+Cas9酶”的组合，gRNA如同“GPS导航”，通过碱基互补配对识别并结合目标基因序列。</div>`,
+      video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=37188789&bvid=BV16t411X7qv&cid=65354103&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+      questions: [{ question: "CRISPR-Cas9技术中，相当于'GPS导航'功能的组件是？", options: ["A. Cas9酶", "B. 向导RNA（gRNA）", "C. 核酸酶", "D. TALE蛋白"], answer: 1, explanation: "gRNA如同GPS导航，识别目标基因序列" }]
+    },
+    4: {
+      title: "2.4 技术升级方向：降低脱靶率与提升精准度",
+      content: `<div class="section-title">高精准工具研发</div><div class="content-text">• Cas12a酶：剪切位点更灵活<br>• 碱基编辑技术：无需切断DNA双链，直接对单个碱基进行修改</div>`,
+      video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=293541894&bvid=BV11f4y17718&cid=423878000&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+      questions: [{ question: "下列哪种技术可'无需切断DNA双链'即实现基因编辑？", options: ["A. ZFN技术", "B. TALEN技术", "C. 碱基编辑技术", "D. CRISPR-Cas9技术"], answer: 2, explanation: "碱基编辑技术无需切断DNA双链，直接修改单个碱基" }]
+    }
+  },
+  3: {
+    title: "第三章 基因编辑的落地应用场景",
+    content: `<div class="section-title">医疗健康领域</div><div class="content-text">• 遗传病治疗：2023年美国批准CRISPR疗法治疗镰状细胞贫血<br>• 癌症治疗：编辑CAR-T细胞增强免疫细胞对癌细胞的识别能力</div>`,
+    video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=591840961&bvid=BV1Cq4y167oP&cid=446196437&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+    questions: [{ question: "下列哪项属于基因编辑在'医疗健康领域'的应用？", options: ["A. 培育耐干旱的水稻品种", "B. 编辑CAR-T细胞治疗白血病", "C. '黄金大米'补充维生素A", "D. 编辑珊瑚基因提高耐高温能力"], answer: 1, explanation: "编辑CAR-T细胞治疗白血病属于医疗健康领域应用" }]
+  },
+  4: {
+    title: "第四章 基因编辑的伦理与安全边界",
+    content: `<div class="section-title">安全风险</div><div class="content-text">• 脱靶效应：误剪非目标基因可能引发新疾病<br>• 嵌合效应：编辑胚胎细胞时部分细胞未被编辑</div>`,
+    video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=337103505&bvid=BV1mR4y14714&cid=453223121&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+    questions: [{ question: "下列哪项属于基因编辑的'嵌合效应'？", options: ["A. 误剪非目标基因导致细胞癌变", "B. 编辑胚胎细胞时，部分细胞未被编辑，同时含两种细胞", "C. 基因编辑影响后代的遗传信息", "D. 编辑免疫细胞后，细胞功能异常"], answer: 1, explanation: "嵌合效应指编辑胚胎细胞时部分细胞未被编辑，形成同时含编辑与未编辑细胞的嵌合体" }]
+  },
+  5: {
+    title: "第五章 基因编辑的未来展望与挑战",
+    content: `<div class="section-title">技术升级方向</div><div class="content-text">• 新型工具：Cas14酶体积更小，可进入更微小细胞结构<br>• 引导编辑技术：结合gRNA与逆转录酶，实现精准插入/替换</div>`,
+    video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=299797100&bvid=BV1JF411V7FA&cid=740330356&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
+    questions: [{ question: "下列哪种新型工具'体积仅为Cas9的1/3，可进入更微小的细胞结构'？", options: ["A. Cas12a酶", "B. Cas14酶", "C. 碱基编辑工具", "D. ZFN工具"], answer: 1, explanation: "Cas14酶体积仅为Cas9的1/3，可进入更微小的细胞结构进行编辑" }]
+  }
+};
+
+// ===== 页面切换 =====
+function hideAllPages() {
+  const pages = ['homePage', 'chapterPage', 'quizPage', 'resultPage', 'qaPage'];
+  pages.forEach(id => document.getElementById(id).classList.remove('active'));
+}
+
+function showHome() {
+  hideAllPages();
+  document.getElementById('homePage').classList.add('active');
+}
+
+function showChapter(chapter) {
+  currentChapter = chapter;
+  currentSection = null;
+  const data = courseData[chapter];
+  renderChapter(data);
+}
+
+function showSection(chapter, section) {
+  currentChapter = chapter;
+  currentSection = section;
+  const data = courseData[chapter][section];
+  renderChapter(data);
+}
+
+function renderChapter(data) {
+  hideAllPages();
+  document.getElementById('chapterTitle').textContent = data.title;
+  document.getElementById('chapterContent').innerHTML = data.content;
+  document.getElementById('videoContainer').innerHTML = data.video || '<div class="video-placeholder">📹 视频加载区域</div>';
+  document.getElementById('chapterPage').classList.add('active');
+  currentQuizQuestions = data.questions;
+}
+
+function showQA() {
+  hideAllPages();
+  document.getElementById('qaPage').classList.add('active');
+}
+
+function startQuizFromHome() {
+  currentChapter = 1;
+  currentSection = null;
+  currentQuizQuestions = courseData[1].questions;
+  startQuiz();
+}
+
+function startQuiz() {
+  hideAllPages();
+  const quizContent = document.getElementById('quizContent');
+  quizContent.innerHTML = '';
+  userAnswers = [];
+  currentQuizQuestions.forEach((q, index) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-question';
+    div.innerHTML = `
+      <div class="question-text"><strong>${index + 1}. ${q.question}</strong></div>
+      <ul class="quiz-options">
+        ${q.options.map((opt, i) => `
+          <li onclick="selectAnswer(${index}, ${i})" data-q="${index}" data-o="${i}">${opt}</li>
+        `).join('')}
+      </ul>
+    `;
+    quizContent.appendChild(div);
+  });
+  document.getElementById('quizPage').classList.add('active');
+}
+
+function selectAnswer(qIndex, oIndex) {
+  userAnswers[qIndex] = oIndex;
+  const options = document.querySelectorAll(`[data-q="${qIndex}"]`);
+  options.forEach(opt => opt.classList.remove('selected'));
+  options[oIndex].classList.add('selected');
+}
+
+function submitQuiz() {
+  if (userAnswers.length !== currentQuizQuestions.length) {
+    alert('请完成所有题目！');
+    return;
+  }
+  let correct = 0, resultHTML = '';
+  currentQuizQuestions.forEach((q, i) => {
+    const isCorrect = userAnswers[i] === q.answer;
+    if (isCorrect) correct++;
+    resultHTML += `
+      <div style="margin-bottom:15px; padding:15px; background:${isCorrect ? '#e8f5e8' : '#ffeaea'}; border-radius:8px;">
+        <strong>第${i + 1}题：</strong>${q.question}<br>
+        <strong>你的答案：</strong>${q.options[userAnswers[i]]}<br>
+        <strong>正确答案：</strong>${q.options[q.answer]}<br>
+        ${!isCorrect ? `<strong>解析：</strong>${q.explanation}` : ''}
+      </div>
+    `;
+  });
+  const score = Math.round((correct / currentQuizQuestions.length) * 100);
+  document.getElementById('scoreDisplay').textContent = `${score}分`;
+  document.getElementById('resultDetails').innerHTML = resultHTML;
+  hideAllPages();
+  document.getElementById('resultPage').classList.add('active');
+}
+
+function retryQuiz() {
+  startQuiz();
+}
+
+function nextChapter() {
+  if (currentChapter === 1) {
+    showChapter(2);
+  } else if (currentChapter === 2) {
+    showChapter(3);
+  } else if (currentChapter === 3) {
+    showChapter(4);
+  } else if (currentChapter === 4) {
+    showChapter(5);
+  } else {
+    alert('已经是最后一章了！');
+    showHome();
+  }
+}
+
+// ===== 真实 Kimi API 接入 =====
+async function submitQuestion() {
+  const question = document.getElementById('questionInput').value.trim();
+  if (!question) return alert('请输入问题！');
+  const responseDiv = document.getElementById('qaResponse');
+  responseDiv.style.display = 'block';
+  responseDiv.innerHTML = '<p>正在思考中...</p>';
+
+  if (!MOONSHOT_API_KEY || MOONSHOT_API_KEY === 'sk-cxZWMrksa7UkLCmafSQ8CZ6PD30UFe3nu95l89LsXVTuTW9k') {
+    responseDiv.innerHTML = `<h3>提示</h3><p>请先申请 Moonshot API Key 并替换代码中的 <code>MOONSHOT_API_KEY</code></p>`;
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${MOONSHOT_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'moonshot-v1-8k',
+        messages: [
+          { role: 'system', content: '你是一个基因编辑科普助手，回答简洁、准确、通俗易懂。' },
+          { role: 'user', content: question }
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
+    });
+
+    const data = await res.json();
+    const answer = data.choices[0].message.content;
+    responseDiv.innerHTML = `<h3>回答：</h3><p>${answer}</p>`;
+  } catch (err) {
+    responseDiv.innerHTML = `<h3>出错</h3><p>无法获取回答，请检查网络或API Key。</p>`;
+  }
+}
+
+</script>
+</body>
+</html>
