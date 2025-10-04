@@ -17,11 +17,12 @@
       font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
       background: linear-gradient(135deg, #e0e7ff 0%, #d6e4ff 100%);
       color: #333; line-height: 1.6; min-height: 100vh;
+      zoom: 1.2
     }
 
     /* ===== 导览页面 ===== */
     .guide-container {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      position: fixed; inset: 0;
       background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
       z-index: 1000; display: flex; align-items: center; justify-content: center;
       transition: opacity 0.5s ease;
@@ -62,7 +63,7 @@
     .nav-link { text-decoration: none; color: #5f6368; font-weight: 500; padding: 10px 0; cursor: pointer; transition: color 0.3s; }
     .nav-link:hover { color: var(--primary); }
 
-    /* ===== 下拉菜单（位置修正） ===== */
+    /* ===== 下拉菜单 ===== */
     .dropdown {
       position: absolute; top: 100%; left: 0; background: #ffffff;
       box-shadow: var(--shadow); border-radius: 12px; padding: 12px 0;
@@ -118,8 +119,8 @@
     .next-btn { background: #00c853; color: #fff; }
 
     /* ===== 问答区 ===== */
-    .qa-input { width: 100%; min-height: 120px; padding: 15px; border: 1px solid #ccc; border-radius: 12px; font-size: 1em; resize: vertical; background: #fafafa; }
-    .qa-submit { margin-top: 15px; padding: 12px 25px; background: linear-gradient(to right, var(--primary), var(--secondary)); color: #fff; border: none; border-radius: 25px; cursor: pointer; transition: all 0.3s ease; }
+    .qa-input { width: 100%; min-height: 120px; padding: 15px; border: 1px solid #ccc; border-radius: 12px; font-size: 1.5em; resize: vertical; background: #fafafa; }
+    .qa-submit { background: linear-gradient(to right, #1a2980, #26d0ce); color: white; border: none; padding: 16px 40px; font-size: 1.15em; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; display: block; margin: 45px auto 0; font-weight: 500; letter-spacing: 0.5px; box-shadow: 0 5px 15px rgba(26, 41, 128, 0.2);}
     .qa-response { margin-top: 20px; padding: 20px; background: #f7f9ff; border-radius: 12px; display: none; line-height: 1.8; }
 
     /* ===== 主页卡片动画 ===== */
@@ -270,7 +271,7 @@
 
 <script>
 // ===== 配置 =====
-const MOONSHOT_API_KEY = '你的key'; // ← 申请：https://platform.moonshot.cn/
+const MOONSHOT_API_KEY = 'sk-cxZWMrksa7UkLCmafSQ8CZ6PD30UFe3nu95l89LsXVTuTW9k'; // ← 申请：https://platform.moonshot.cn/
 
 // ===== 数据 =====
 const courseData = {
@@ -497,11 +498,6 @@ async function submitQuestion() {
   responseDiv.style.display = 'block';
   responseDiv.innerHTML = '<p>正在思考中...</p>';
 
-  if (!MOONSHOT_API_KEY || MOONSHOT_API_KEY === '你的key') {
-    responseDiv.innerHTML = `<h3>提示</h3><p>请先申请 Moonshot API Key 并替换代码中的 <code>MOONSHOT_API_KEY</code></p>`;
-    return;
-  }
-
   try {
     const res = await fetch('https://api.moonshot.cn/v1/chat/completions', {
       method: 'POST',
@@ -538,7 +534,7 @@ setInterval(() => {
     currentSlide = 1;
     showSlide(currentSlide);
   }
-}, 4000);
+}, 1500);
 
 </script>
 </body>
