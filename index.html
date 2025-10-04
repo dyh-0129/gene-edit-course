@@ -39,7 +39,7 @@
     .enter-btn {
       background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3);
       padding: 16px 45px; font-size: 1.2em; border-radius: 35px; cursor: pointer;
-      transition: all 0.3s ease; backdrop-filter: blur(10px);
+      transition: all 0.1s ease; backdrop-filter: blur(10px);
     }
     .enter-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); }
 
@@ -97,7 +97,8 @@
     .section-title { font-size: 1.6em; color: var(--secondary); margin: 30px 0 15px; font-weight: 600; }
     .content-text { margin-bottom: 20px; text-align: justify; color: #444; }
     .video-container { margin: 30px 0; text-align: center; }
-    .quiz-button { background: #00c853; color: #fff; }
+    .quiz-button { background: linear-gradient(to right, #1a2980, #26d0ce); color: white; border: none; padding: 16px 40px; font-size: 1.15em; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; display: block; margin: 45px auto 0; font-weight: 500; letter-spacing: 0.5px; box-shadow: 0 5px 15px rgba(26, 41, 128, 0.2);}
+    .quiz-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26, 41, 128, 0.3);}
     
     /* ===== 答题动画 ===== */
     .quiz-options li {
