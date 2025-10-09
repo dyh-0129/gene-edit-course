@@ -62,7 +62,12 @@
     .nav-menu { display: flex; list-style: none; gap: 35px; }
     .nav-link { text-decoration: none; color: #5f6368; font-weight: 500; padding: 10px 0; cursor: pointer; transition: color 0.3s; }
     .nav-link:hover { color: var(--primary); }
-
+    /* PubMed 搜索弹层 */
+    .popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:2000; }
+    .popup-card{ background:var(--glass); backdrop-filter:blur(12px); padding:35px 40px; border-radius:16px; box-shadow:var(--shadow); width:90%; max-width:480px; border:1px solid rgba(255,255,255,.3); }
+    .popup-close{ float:right; font-size:1.8em; cursor:pointer; color:#666; }
+    .popup-close:hover{color:#000;}
+    #pubmedKeyword{ width:100%; padding:12px 15px; font-size:1.1em; border-radius:8px; border:1px solid #ccc; margin:15px 0; }
     /* ===== 下拉菜单 ===== */
     .dropdown {
       position: absolute; top: 100%; left: 0; background: #ffffff;
@@ -100,17 +105,23 @@
     .video-container { margin: 30px 0; text-align: center; }
     .quiz-button { background: linear-gradient(to right, #1a2980, #26d0ce); color: white; border: none; padding: 16px 40px; font-size: 1.15em; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; display: block; margin: 45px auto 0; font-weight: 500; letter-spacing: 0.5px; box-shadow: 0 5px 15px rgba(26, 41, 128, 0.2);}
     .quiz-button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(26, 41, 128, 0.3);}
+      
+    /* ===== 关于我们 ===== */
+      .about-us {margin-top: 50px;}
+      .about-us h2 { text-align: center; font-size: 2em; margin-bottom: 20px; color: #444;}
+      .about-us h3 { text-align: center; font-size: 1.3em; margin-bottom: 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+      .about-us p { text-align: justify; color: #444; line-height: 1.8;}
+      .about-us .contact-btn { text-align: center; margin-top: 25px;}
+      .about-us .contact-btn a { display: inline-block; padding: 10px 25px; background: linear-gradient(to right, var(--primary), var(--secondary)); color: #fff; border-radius: 25px; text-decoration: none; transition: all .3s ease;}
+      .about-us .contact-btn a:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(26, 41, 128, 0.25);}
     
-    /* ===== 答题动画 ===== */
-    .quiz-options li {
-      padding: 14px; margin: 8px 0; background: #eef2ff; border-radius: 8px;
-      cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent;
-    }
+      /* ===== 答题动画 ===== */
+    .quiz-options li { padding: 14px; margin: 8px 0; background: #eef2ff; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; border: 1px solid transparent;}
     .quiz-options li:hover { background: #dce4ff; transform: translateX(5px); }
-    .quiz-options li.selected {
-      background: linear-gradient(to right, var(--primary), var(--secondary));
-      color: #fff; border-color: transparent;
-    }
+    .quiz-options li.selected { background: linear-gradient(to right, var(--primary), var(--secondary)); color: #fff; border-color: transparent;}
+
+    /* 综合测试页专属 */
+    .global-quiz-result { margin-top: 30px; padding: 20px; border-radius: 12px; background: #f7f9ff; line-height: 1.8; }
 
     /* ===== 结果页 ===== */
     .result-buttons { display: flex; gap: 20px; justify-content: center; margin-top: 30px; }
@@ -204,7 +215,9 @@
           <a class="dropdown-item" onclick="showChapter(5)">第五章：未来展望</a>
         </div>
       </li>
+      <li class="nav-item"><a class="nav-link" onclick="showGlobalQuiz()">综合测试</a></li>
       <li class="nav-item"><a class="nav-link" onclick="showQA()">智能问答</a></li>
+      <li class="nav-item"><a class="nav-link" onclick="openPubMedSearch()">PubMed 文献搜索</a></li>
     </ul>
   </div>
 </nav>
@@ -232,7 +245,18 @@
         <p>智能助手为您解答基因编辑相关问题</p>
       </div>
     </div>
+    <!-- 关于我们 -->
+    <div class="about-us">
+      <h2>关于我们</h2>
+      <h3>探索生命的密码，从基因编辑开始</h3>
+      <p>基因编辑技术正深刻改变着我们对生命的认知与操控方式。它不仅是现代生物学的前沿领域，也在医学、农业、环保等方向展现出巨大潜力。我们的网站致力于为公众提供通俗易懂、科学严谨的基因编辑知识，帮助你了解 CRISPR、TALEN、ZFN 等技术的原理、应用与伦理讨论。无论你是学生、科研人员，还是对生命科学充满好奇的普通大众，这里都有适合你的内容 —— 从入门科普到前沿研究，从趣味动画到权威资料。让我们一起揭开 DNA 的神秘面纱，探索未来生命科学的无限可能。</p>
+      <div class="contact-btn">
+        <a href="mailto: dongyihemm@126.com">联系我们</a>
+      </div>
+    </div>
   </div>
+  </div>
+</div>
 
   <!-- 章节内容 -->
   <div id="chapterPage" class="container page">
@@ -259,6 +283,13 @@
       <button class="result-btn next-btn" onclick="nextChapter()">学习下一章</button>
     </div>
   </div>
+  
+  <!-- 综合测试页 -->
+  <div id="globalQuizPage" class="container page">
+    <h1 class="chapter-title">综合测试（随机 10 题）</h1>
+    <div id="globalQuizContent"></div>
+    <button class="quiz-button" onclick="submitGlobalQuiz()">提交答案</button>
+  </div>
 
   <!-- 智能问答 -->
   <div id="qaPage" class="container page">
@@ -267,9 +298,30 @@
     <button class="qa-submit" onclick="submitQuestion()">提交问题</button>
     <div class="qa-response" id="qaResponse"></div>
   </div>
-</div>
+ 
+  <!-- PubMed 搜索弹层 -->
+  <div id="pubmedPopup" class="popup-overlay" style="display:none;">
+    <div class="popup-card">
+      <span class="popup-close" onclick="closePubMedSearch()">&times;</span>
+      <h2>PubMed 文献搜索</h2>
+      <input type="text" id="pubmedKeyword" placeholder="请输入关键词、作者、PMID…" autocomplete="off">
+      <button class="quiz-button" onclick="goPubMed()">搜索</button>
+    </div>
+  </div>
 
 <script>
+// 自动轮播导览页
+let currentSlide = 1;
+setInterval(() => {
+  if (currentSlide < 4) {
+    currentSlide++;
+    showSlide(currentSlide);
+  } else {
+    currentSlide = 1;
+    showSlide(currentSlide);
+  }
+}, 1500);
+
 // ===== 配置 =====
 const MOONSHOT_API_KEY = 'sk-cxZWMrksa7UkLCmafSQ8CZ6PD30UFe3nu95l89LsXVTuTW9k'; // ← 申请：https://platform.moonshot.cn/
 
@@ -287,18 +339,11 @@ const courseData = {
     `,
     video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=464164346&bvid=BV1dL411u7DW&cid=441171372&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
     questions: [
-      {
-        question: "文中用'生命说明书'比喻的是下列哪种物质？",
-        options: ["A. 基因", "B. DNA", "C. 蛋白质", "D. 染色体"],
-        answer: 1,
-        explanation: "第一章明确提到'用生命说明书比喻DNA，说明其是承载遗传信息的大分子'"
-      },
-      {
-        question: "下列关于基因编辑与传统杂交育种的区别，说法正确的是？",
-        options: ["A. 两者都依赖自然基因重组", "B. 基因编辑可精准修改基因，杂交育种效率更低", "C. 杂交育种能直接修改基因序列，基因编辑不能", "D. 两者操作成本与难度一致"],
-        answer: 1,
-        explanation: "第一章指出基因编辑是'精准修改基因序列'，传统杂交育种'依赖自然基因重组、效率低'"
-      }
+      { question: "文中用'生命说明书'比喻的是下列哪种物质？它承载的核心功能是什么？", options: ["A. 基因，控制生物性状", "B. DNA，承载遗传信息", "C. 蛋白质，执行生命活动", "D. 染色体，储存遗传物质"], answer: 1, explanation: "第一章明确提到'用生命说明书比喻DNA，说明其是承载遗传信息的大分子，核心功能是承载遗传信息。'"},
+      { question: "下列关于基因编辑与传统杂交育种的区别，说法正确的是？", options: ["A. 两者都依赖自然基因重组", "B. 基因编辑可精准修改基因，杂交育种效率更低", "C. 杂交育种能直接修改基因序列，基因编辑不能", "D. 两者操作成本与难度一致"], answer: 1, explanation: "第一章指出基因编辑是'精准修改基因序列'，传统杂交育种'依赖自然基因重组、效率低'"},
+      { question: "被称为基因编辑智能剪刀，且在 2012 年出现、推动技术普及的是哪项技术？", options: ["A. 限制性内切酶（初代剪刀）", "B. ZFN 技术（进阶剪刀）", "C. TALEN 技术（精准进阶工具）", "D. CRISPR-Cas9 技术"], answer: 3, explanation: "第一章 c 部分梳理技术历程，2012 年智能剪刀 CRISPR-Cas9 技术操作简单、成本低，推动基因编辑普及"},
+      { question: "文档中提到血红蛋白基因碱基突变会导致镰状细胞贫血，这一案例主要说明基因的什么作用？", options: ["A. 基因是 DNA 上无功能的片段", "B. 基因控制生物特定性状（如红细胞功能）", "C. 基因突变必然导致癌症", "D. 血红蛋白基因是唯一会突变的基因"], answer: 1, explanation: "第一章 a 部分以该案例说明基因是 DNA 上控制生物性状的特定片段，即基因控制生物特定性状"},
+      { question: "基因编辑技术的本质是什么？", options: ["A. 破坏 DNA 分子，消除遗传信息", "B. 通过技术手段对基因序列进行修改、删除、插入，调整遗传信息", "C. 复制完整的 DNA 分子，实现生物克隆", "D. 仅能删除基因，无法插入新基因片段"], answer: 1, explanation: "第一章 b 部分定义基因编辑，其本质是通过技术手段对基因序列修改、删除、插入，调整遗传信息"}
     ]
   },
   2: {
@@ -318,7 +363,8 @@ const courseData = {
       { question: "ZFN技术的组成部分不包括下列哪一项？", options: ["A. 锌指蛋白", "B. 核酸酶", "C. 向导RNA（gRNA）", "D. 目标基因识别组件"], answer: 2, explanation: "ZFN由锌指蛋白和核酸酶组成，gRNA是CRISPR的组件" },
       { question: "TALEN技术中，与基因序列存在'明确对应关系'的组件是？", options: ["A. 核酸酶", "B. TALE蛋白", "C. 锌指蛋白", "D. Cas9酶"], answer: 1, explanation: "TALE蛋白的氨基酸序列与基因序列存在明确对应关系" },
       { question: "CRISPR-Cas9技术中，相当于'GPS导航'功能的组件是？", options: ["A. Cas9酶", "B. 向导RNA（gRNA）", "C. 核酸酶", "D. TALE蛋白"], answer: 1, explanation: "gRNA如同GPS导航，识别目标基因序列" },
-      { question: "下列哪种技术可'无需切断DNA双链'即实现基因编辑？", options: ["A. ZFN技术", "B. TALEN技术", "C. 碱基编辑技术", "D. CRISPR-Cas9技术"], answer: 2, explanation: "碱基编辑技术无需切断DNA双链，直接修改单个碱基" }
+      { question: "下列哪种技术可'无需切断DNA双链'即实现基因编辑？", options: ["A. ZFN技术", "B. TALEN技术", "C. 碱基编辑技术", "D. CRISPR-Cas9技术"], answer: 2, explanation: "碱基编辑技术无需切断DNA双链，直接修改单个碱基" },      
+      { question: "文档中提到的全基因组测序主要用于基因编辑的哪一环节？", options: ["A. 设计目标基因片段", "B. 切断 DNA 双链", "C. 检测脱靶效应（排查误剪位点）", "D. 组装 TALE 蛋白"], answer: 2, explanation: "脱靶检测技术中，全基因组测序可在编辑后对细胞基因组全面检测，排查误剪位点，即检测脱靶效应"}
     ]
   },
   3: {
@@ -332,7 +378,13 @@ const courseData = {
       <div class="content-text">• 疾病模型构建：编辑小鼠基因模拟人类疾病<br>• 生态修复：编辑珊瑚基因提高耐高温能力</div>
       <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=591840961&bvid=BV1Cq4y167oP&cid=446196437&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
-    questions: [{ question: "下列哪项属于基因编辑在'医疗健康领域'的应用？", options: ["A. 培育耐干旱的水稻品种", "B. 编辑CAR-T细胞治疗白血病", "C. '黄金大米'补充维生素A", "D. 编辑珊瑚基因提高耐高温能力"], answer: 1, explanation: "编辑CAR-T细胞治疗白血病属于医疗健康领域应用" }]
+    questions: [
+      { question: "下列哪项属于基因编辑在'医疗健康领域'的应用？", options: ["A. 培育耐干旱的水稻品种", "B. 编辑CAR-T细胞治疗白血病", "C. '黄金大米'补充维生素A", "D. 编辑珊瑚基因提高耐高温能力"], answer: 1, explanation: "编辑CAR-T细胞治疗白血病属于医疗健康领域应用" },
+      { question: "2023 年美国批准的 CRISPR 疗法，主要用于缓解哪种疾病的症状？", options: ["A. 白血病", "B. 镰状细胞贫血", "C. 阿尔茨海默症", "D. 疟疾"], answer: 1, explanation: "医疗应用里，2023 年美国批准 CRISPR 疗法，通过修正镰状细胞贫血患者的致病基因缓解症状"},
+      { question: "黄金大米通过基因编辑实现的核心改良是？", options: ["A. 增强耐旱能力，减少水资源消耗", "B. 增加 β- 胡萝卜素含量，解决维生素 A 缺乏问题", "C. 抑制成熟相关蛋白，延长保鲜期", "D. 抗虫能力提升，减少农药使用"], answer: 1, explanation: "农业应用中，黄金大米通过编辑基因增加 β- 胡萝卜素含量，解决贫困地区维生素 A 缺乏问题"},
+      { question: "编辑蚊子基因的主要应用场景是？", options: ["A. 培育体型更大的蚊子，增加生态链环节", "B. 使其无法携带疟疾寄生虫，减少疟疾传播", "C. 改变蚊子的食性，不再叮咬人类", "D. 增强蚊子耐高温能力，适应气候变暖"], answer: 1, explanation: "关于传染病预防，编辑蚊子基因使其无法携带疟疾寄生虫，减少疟疾传播范围"},
+      { question: "编辑小鼠基因构建疾病模型，主要为哪一领域提供支持？", options: ["A. 作物育种", "B. 珊瑚生态修复", "C. 药物研发（模拟人类阿尔茨海默症、糖尿病等）", "D. 食品保鲜技术测试"], answer: 2, explanation: "科研应用中，编辑小鼠基因模拟人类阿尔茨海默症、糖尿病等疾病，构建疾病模型，为药物研发提供实验载体"}    
+    ]
   },
   4: {
     title: "第四章 基因编辑的伦理与安全边界",
@@ -345,7 +397,14 @@ const courseData = {
       <div class="content-text">国际共识禁止生殖细胞编辑用于临床，各国政策存在差异。</div>
       <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=337103505&bvid=BV1mR4y14714&cid=453223121&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
-    questions: [{ question: "下列哪项属于基因编辑的'嵌合效应'？", options: ["A. 误剪非目标基因导致细胞癌变", "B. 编辑胚胎细胞时，部分细胞未被编辑，同时含两种细胞", "C. 基因编辑影响后代的遗传信息", "D. 编辑免疫细胞后，细胞功能异常"], answer: 1, explanation: "嵌合效应指编辑胚胎细胞时部分细胞未被编辑，形成同时含编辑与未编辑细胞的嵌合体" }]
+    questions: [
+      { question: "下列哪项属于基因编辑的'嵌合效应'？", options: ["A. 误剪非目标基因导致细胞癌变", "B. 编辑胚胎细胞时，部分细胞未被编辑，同时含两种细胞", "C. 基因编辑影响后代的遗传信息", "D. 编辑免疫细胞后，细胞功能异常"], answer: 1, explanation: "嵌合效应指编辑胚胎细胞时部分细胞未被编辑，形成同时含编辑与未编辑细胞的嵌合体" },
+      { question: "全球多数国家禁止生殖细胞编辑用于临床的核心原因是？", options: ["A. 生殖细胞编辑技术难度过低，易被滥用", "B. 生殖细胞编辑仅影响个体，不改变后代基因", "C. 可能改变后代基因，破坏人类基因库多样性", "D. 生殖细胞编辑成本过高，无临床价值"], answer: 2, explanation: "关于伦理争议，生殖细胞编辑会改变后代基因，可能破坏人类基因库多样性，因此全球多数国家禁止其用于临床"},
+      { question: "以下哪项属于基因增强，可能违背社会平等原则？", options: ["A. 修正镰状细胞贫血的致病基因", "B. 编辑 CAR-T 细胞治疗白血病", "C. 编辑身高、智商相关基因", "D. 编辑蚊子基因预防疟疾"], answer: 2, explanation: "对于区分治疗与增强，基因增强如编辑身高、智商相关基因，可能导致基因歧视，违背社会平等原则"},
+      { question: "中国对胚胎基因编辑研究的政策是？", options: ["A. 允许临床应用，无需伦理审批", "B. 严格限制，仅允许基础科研且需伦理审批", "C. 完全禁止任何胚胎基因编辑研究", "D. 允许商业化应用，只需报备即可"], answer: 1, explanation: "关于全球监管，中国严格限制胚胎基因编辑研究，仅允许基础科研且需伦理审批"},
+      { question: "基因编辑的脱靶效应可能带来的危害是？", options: ["A. 提高基因编辑效率，加速研究进程", "B. 误剪非目标基因，可能引发新疾病（如细胞癌变）", "C. 降低基因编辑成本，利于技术普及", "D. 增强细胞修复能力，减少 DNA 损伤"], answer: 1, explanation: "对于安全风险，脱靶效应即误剪非目标基因，可能引发新疾病，如导致细胞癌变"}
+    
+    ]
   },
   5: {
     title: "第五章 基因编辑的未来展望与挑战",
@@ -358,7 +417,13 @@ const courseData = {
       <div class="content-text">• 技术鸿沟：基因治疗成本高昂，需降低成本<br>• 公众参与：通过科普让大众理解技术原理与风险</div>
       <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=299797100&bvid=BV1JF411V7FA&cid=740330356&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
-    questions: [{ question: "下列哪种新型工具'体积仅为Cas9的1/3，可进入更微小的细胞结构'？", options: ["A. Cas12a酶", "B. Cas14酶", "C. 碱基编辑工具", "D. ZFN工具"], answer: 1, explanation: "Cas14酶体积仅为Cas9的1/3，可进入更微小的细胞结构进行编辑" }]
+    questions: [
+      { question: "下列哪种新型工具'体积仅为Cas9的1/3，可进入更微小的细胞结构'？", options: ["A. Cas12a酶", "B. Cas14酶", "C. 碱基编辑工具", "D. ZFN工具"], answer: 1, explanation: "Cas14酶体积仅为Cas9的1/3，可进入更微小的细胞结构进行编辑" },
+      { question: "AI 在基因编辑中的主要应用是？", options: ["A. 直接执行 DNA 剪切操作", "B. 辅助设计 gRNA（通过机器学习分析基因序列，提高定位精准度）", "C. 合成完整的 DNA 分子", "D. 替代伦理审批流程"], answer: 1, explanation: "对于跨界融合，AI 可辅助设计 gRNA，通过机器学习分析基因序列，提高定位精准度，减少脱靶"},
+      { question: "基因编辑与合成生物学结合的应用不包括以下哪项？", options: ["A. 编辑微生物基因使其合成抗癌药物", "B. 编辑微生物基因使其降解塑料污染物", "C. 设计人工细胞", "D. 编辑珊瑚基因提高耐高温能力"], answer: 3, explanation: "关于基因编辑 + 合成生物学，可设计人工细胞，如编辑微生物基因使其合成抗癌药物、降解塑料污染物；D 属于生态修复应用，非两者结合的应用"},
+      { question: "目前基因编辑技术普及的主要公平性挑战是？", options: ["A. 技术难度过高，无人能掌握", "B. 基因治疗成本较高（如 CRISPR 疗法单次超百万美元），可能仅少数人享受红利", "C. 公众对技术认知过高，过度依赖", "D. 监管政策过于宽松，易被滥用"], answer: 1, explanation: "提道普及挑战，技术鸿沟导致目前基因治疗成本较高，如 CRISPR 疗法单次费用超百万美元，需降低成本避免仅少数人享受技术红利，这是主要的公平性挑战"},
+      { question: "引导编辑技术的核心特点是？", options: ["A. 结合 gRNA 与逆转录酶，实现精准插入 / 替换，无脱靶风险", "B. 必须依赖 Cas9 酶才能发挥作用", "C. 仅能删除基因，无法插入新片段", "D. 操作复杂，成本远高于 CRISPR-Cas9"], answer: 0, explanation: "关于引导编辑技术，其结合 gRNA 与逆转录酶，可实现精准插入 / 替换，且无脱靶风险"}
+    ]
   }
 };
 
@@ -490,6 +555,87 @@ function nextChapter() {
   }
 }
 
+/* ========== 综合测试 ========== */
+const globalQuizBank = [    // 把 5 章所有题汇到一起
+  ...courseData[1].questions,
+  ...courseData[2].questions,
+  ...courseData[3].questions,
+  ...courseData[4].questions,
+  ...courseData[5].questions
+];
+let globalQuizQuestions = [];
+let globalUserAnswers   = [];
+
+// 导航栏点击
+function showGlobalQuiz(){
+  hideAllPages();
+  document.getElementById('globalQuizPage').classList.add('active');
+  generateGlobalQuiz();
+}
+
+// 随机抽 10 题（不足 10 题则全抽）
+function generateGlobalQuiz(){
+  globalQuizQuestions = globalQuizBank
+    .sort(() => Math.random() - 0.5)   // Fisher-Yates 洗牌
+    .slice(0, 10);
+  globalUserAnswers   = [];
+  renderGlobalQuiz();
+}
+
+// 渲染题目
+function renderGlobalQuiz(){
+  const box = document.getElementById('globalQuizContent');
+  box.innerHTML = '';
+  globalQuizQuestions.forEach((q, idx) => {
+    box.insertAdjacentHTML('beforeend', `
+      <div class="quiz-question">
+        <div class="question-text"><strong>${idx + 1}. ${q.question}</strong></div>
+        <ul class="quiz-options">
+          ${q.options.map((opt, i) => `
+            <li onclick="selectGlobalAnswer(${idx}, ${i})" data-q="${idx}" data-o="${i}">${opt}</li>
+          `).join('')}
+        </ul>
+      </div>
+    `);
+  });
+}
+
+// 选中答案
+function selectGlobalAnswer(qIdx, oIdx){
+  globalUserAnswers[qIdx] = oIdx;
+  document.querySelectorAll(`[data-q="${qIdx}"]`).forEach(li => li.classList.remove('selected'));
+  document.querySelector(`[data-q="${qIdx}"][data-o="${oIdx}"]`).classList.add('selected');
+}
+
+// 交卷
+function submitGlobalQuiz(){
+  if (globalUserAnswers.length !== globalQuizQuestions.length){
+    alert('请完成所有题目！'); return;
+  }
+  let correct = 0, html = '';
+  globalQuizQuestions.forEach((q, i) => {
+    const right = globalUserAnswers[i] === q.answer;
+    if (right) correct++;
+    html += `
+      <div class="global-quiz-result" style="background:${right?'#e8f5e8':'#ffeaea'}">
+        <strong>第${i + 1}题.</strong> ${q.question}<br>
+        <strong>你的答案：</strong>${q.options[globalUserAnswers[i]]}<br>
+        <strong>正确答案：</strong>${q.options[q.answer]}<br>
+        ${!right ? `<strong>解析：</strong>${q.explanation}` : ''}
+      </div>
+    `;
+  });
+  const score = Math.round(correct / globalQuizQuestions.length * 100);
+  document.getElementById('globalQuizContent').innerHTML = `
+    <h2 style="text-align:center; font-size:2.5em; margin:20px 0;">${score}分</h2>
+    ${html}
+    <div style="text-align:center; margin-top:30px;">
+      <button class="quiz-button" onclick="showGlobalQuiz()">再测一次</button>
+      <button class="quiz-button" onclick="showHome()">返回主页</button>
+    </div>
+  `;
+}
+
 // ===== 真实 Kimi API 接入 =====
 async function submitQuestion() {
   const question = document.getElementById('questionInput').value.trim();
@@ -524,17 +670,25 @@ async function submitQuestion() {
   }
 }
 
-// 自动轮播导览页
-let currentSlide = 1;
-setInterval(() => {
-  if (currentSlide < 4) {
-    currentSlide++;
-    showSlide(currentSlide);
-  } else {
-    currentSlide = 1;
-    showSlide(currentSlide);
-  }
-}, 1500);
+/* PubMed 搜索 */
+function openPubMedSearch(){
+  document.getElementById('pubmedPopup').style.display='flex';
+  document.getElementById('pubmedKeyword').focus();
+}
+function closePubMedSearch(){
+  document.getElementById('pubmedPopup').style.display='none';
+}
+function goPubMed(){
+  const kw=document.getElementById('pubmedKeyword').value.trim();
+  if(!kw){alert('请输入搜索词！');return;}
+  // 直接带关键词跳转到 PubMed 结果页
+  window.open('https://pubmed.ncbi.nlm.nih.gov/?term='+encodeURIComponent(kw),'_blank');
+  closePubMedSearch();
+}
+/* 点 ESC 也可关闭 */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closePubMedSearch();
+});
 
 </script>
 </body>
