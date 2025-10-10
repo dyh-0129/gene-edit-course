@@ -62,12 +62,8 @@
     .nav-menu { display: flex; list-style: none; gap: 35px; }
     .nav-link { text-decoration: none; color: #5f6368; font-weight: 500; padding: 10px 0; cursor: pointer; transition: color 0.3s; }
     .nav-link:hover { color: var(--primary); }
-    /* PubMed 搜索弹层 */
-    .popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:2000; }
-    .popup-card{ background:var(--glass); backdrop-filter:blur(12px); padding:35px 40px; border-radius:16px; box-shadow:var(--shadow); width:90%; max-width:480px; border:1px solid rgba(255,255,255,.3); }
-    .popup-close{ float:right; font-size:1.8em; cursor:pointer; color:#666; }
-    .popup-close:hover{color:#000;}
-    #pubmedKeyword{ width:100%; padding:12px 15px; font-size:1.1em; border-radius:8px; border:1px solid #ccc; margin:15px 0; }
+    
+
     /* ===== 下拉菜单 ===== */
     .dropdown {
       position: absolute; top: 100%; left: 0; background: #ffffff;
@@ -98,7 +94,8 @@
       font-size: 2.5em; color: var(--primary); margin-bottom: 25px;
       text-align: center; font-weight: 700;
       background: linear-gradient(to right, var(--primary), var(--secondary));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
     .section-title { font-size: 1.6em; color: var(--secondary); margin: 30px 0 15px; font-weight: 600; }
     .content-text { margin-bottom: 20px; text-align: justify; color: #444; }
@@ -109,7 +106,7 @@
     /* ===== 关于我们 ===== */
       .about-us {margin-top: 50px;}
       .about-us h2 { text-align: center; font-size: 2em; margin-bottom: 20px; color: #444;}
-      .about-us h3 { text-align: center; font-size: 1.3em; margin-bottom: 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+      .about-us h3 { text-align: center; font-size: 1.3em; margin-bottom: 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text ; -webkit-text-fill-color: transparent;}
       .about-us p { text-align: justify; color: #444; line-height: 1.8;}
       .about-us .contact-btn { text-align: center; margin-top: 25px;}
       .about-us .contact-btn a { display: inline-block; padding: 10px 25px; background: linear-gradient(to right, var(--primary), var(--secondary)); color: #fff; border-radius: 25px; text-decoration: none; transition: all .3s ease;}
@@ -145,7 +142,14 @@
     .feature-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); }
     .feature-icon { font-size: 2.5em; margin-bottom: 15px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .feature-title { font-size: 1.3em; margin-bottom: 10px; color: var(--primary); }
-
+    
+    /* PubMed 搜索弹层 */
+    .popup-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index:2000; }
+    .popup-card{ background:var(--glass); backdrop-filter:blur(12px); padding:35px 40px; border-radius:16px; box-shadow:var(--shadow); width:90%; max-width:480px; border:1px solid rgba(255,255,255,.3); }
+    .popup-close{ float:right; font-size:1.8em; cursor:pointer; color:#666; }
+    .popup-close:hover{color:#000;}
+    #pubmedKeyword{ width:100%; padding:12px 15px; font-size:1.1em; border-radius:8px; border:1px solid #ccc; margin:15px 0; }
+    
     /* ===== 页面切换 ===== */
     .page { display: none; }
     .page.active { display: block; animation: fadeIn 0.5s ease; }
@@ -226,7 +230,7 @@
 <div class="main-content" id="mainContent" style="display: none;">
   <!-- 主页 -->
   <div id="homePage" class="container page active">
-    <h1 style="font-size: 2.5em; text-align: center; margin-bottom: 20px; background: linear-gradient(to right, #1a2980, #26d0ce); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">欢迎来到基因编辑科普课程</h1>
+    <h1 style="font-size: 2.5em; text-align: center; margin-bottom: 20px; background: linear-gradient(to right, #1a2980, #26d0ce); -webkit-background-clip: text ;-webkit-text-fill-color: transparent;">欢迎来到基因编辑科普课程</h1>
     <p style="text-align: center; color: #666; margin-bottom: 40px;">深入了解基因编辑技术的原理、应用与未来发展</p>
     <div class="feature-grid">
       <div class="feature-card" onclick="showChapter(1)">
@@ -255,60 +259,59 @@
       </div>
     </div>
   </div>
-  </div>
 </div>
 
-  <!-- 章节内容 -->
-  <div id="chapterPage" class="container page">
-    <h1 class="chapter-title" id="chapterTitle"></h1>
-    <div id="chapterContent"></div>
-    <div class="video-container" id="videoContainer"></div>
-    <button class="quiz-button" onclick="startQuiz()">开始答题</button>
-  </div>
+<!-- 章节内容 -->
+<div id="chapterPage" class="container page">
+  <h1 class="chapter-title" id="chapterTitle"></h1>
+  <div id="chapterContent"></div>
+  <div class="video-container" id="videoContainer"></div>
+  <button class="quiz-button" onclick="startQuiz()">开始答题</button>
+</div>
 
-  <!-- 答题页 -->
-  <div id="quizPage" class="container page">
-    <h1 class="chapter-title">章节测试</h1>
-    <div id="quizContent"></div>
-    <button class="quiz-button" onclick="submitQuiz()">提交答案</button>
-  </div>
+<!-- 答题页 -->
+<div id="quizPage" class="container page">
+  <h1 class="chapter-title">章节测试</h1>
+  <div id="quizContent"></div>
+  <button class="quiz-button" onclick="submitQuiz()">提交答案</button>
+</div>
 
-  <!-- 结果页 -->
-  <div id="resultPage" class="container page">
-    <h1 class="chapter-title">测试结果</h1>
-    <div class="score" id="scoreDisplay" style="font-size:3em; text-align:center; margin-bottom:20px;"></div>
-    <div id="resultDetails"></div>
-    <div class="result-buttons">
-      <button class="result-btn retry-btn" onclick="retryQuiz()">重新答题</button>
-      <button class="result-btn next-btn" onclick="nextChapter()">学习下一章</button>
-    </div>
+<!-- 结果页 -->
+<div id="resultPage" class="container page">
+  <h1 class="chapter-title">测试结果</h1>
+  <div class="score" id="scoreDisplay" style="font-size:3em; text-align:center; margin-bottom:20px;"></div>
+  <div id="resultDetails"></div>
+  <div class="result-buttons">
+    <button class="result-btn retry-btn" onclick="retryQuiz()">重新答题</button>
+    <button class="result-btn next-btn" onclick="nextChapter()">学习下一章</button>
   </div>
+</div>
   
-  <!-- 综合测试页 -->
-  <div id="globalQuizPage" class="container page">
-    <h1 class="chapter-title">综合测试（随机 10 题）</h1>
-    <div id="globalQuizContent"></div>
-    <button class="quiz-button" onclick="submitGlobalQuiz()">提交答案</button>
-  </div>
+<!-- 综合测试页 -->
+<div id="globalQuizPage" class="container page">
+  <h1 class="chapter-title">综合测试（随机 10 题）</h1>
+  <div id="globalQuizContent"></div>
+  <button class="quiz-button" onclick="submitGlobalQuiz()">提交答案</button>
+</div>
 
-  <!-- 智能问答 -->
-  <div id="qaPage" class="container page">
-    <h1 class="chapter-title">智能问答（Kimi AI）</h1>
-    <textarea class="qa-input" id="questionInput" placeholder="请输入您关于基因编辑的问题..."></textarea>
-    <button class="qa-submit" onclick="submitQuestion()">提交问题</button>
-    <div class="qa-response" id="qaResponse"></div>
+<!-- 智能问答 -->
+<div id="qaPage" class="container page">
+  <h1 class="chapter-title">智能问答（Kimi AI）</h1>
+  <textarea class="qa-input" id="questionInput" placeholder="请输入您关于基因编辑的问题..."></textarea>
+  <button class="qa-submit" onclick="submitQuestion()">提交问题</button>
+  <div class="qa-response" id="qaResponse"></div>
+</div>
+
+<!-- PubMed 搜索弹层 -->
+<div id="pubmedPopup" class="popup-overlay" style="display:none;">
+  <div class="popup-card">
+    <span class="popup-close" onclick="closePubMedSearch()">&times;</span>
+    <h2>PubMed 文献搜索</h2>
+    <input type="text" id="pubmedKeyword" placeholder="请输入关键词、作者、PMID…" autocomplete="off">
+    <button class="quiz-button" onclick="goPubMed()">搜索</button>
   </div>
+</div>
  
-  <!-- PubMed 搜索弹层 -->
-  <div id="pubmedPopup" class="popup-overlay" style="display:none;">
-    <div class="popup-card">
-      <span class="popup-close" onclick="closePubMedSearch()">&times;</span>
-      <h2>PubMed 文献搜索</h2>
-      <input type="text" id="pubmedKeyword" placeholder="请输入关键词、作者、PMID…" autocomplete="off">
-      <button class="quiz-button" onclick="goPubMed()">搜索</button>
-    </div>
-  </div>
-
 <script>
 // 自动轮播导览页
 let currentSlide = 1;
@@ -317,7 +320,7 @@ setInterval(() => {
     currentSlide++;
     showSlide(currentSlide);
   } else {
-    currentSlide = 1;
+    currentSlide = 4;
     showSlide(currentSlide);
   }
 }, 1500);
@@ -331,11 +334,11 @@ const courseData = {
     title: "第一章 基因编辑入门：从'生命密码'到技术演进",
     content: `
       <div class="section-title">基因与DNA的关系</div>
-      <div class="content-text">DNA是承载遗传信息的大分子，基因是DNA上控制生物性状的特定片段。就像手机系统代码决定手机功能一样，基因差异决定了生物差异。</div>
+      <div class="content-text">DNA 是承载遗传信息的大分子，像一本 “生命说明书”，用 A、T、C、G 四种碱基作为 “文字”；基因则是说明书中控制生物性状的特定 “章节”。比如血红蛋白基因决定红细胞功能，该基因碱基突变会导致镰状细胞贫血 —— 患者红细胞变形成镰刀状，无法正常携氧，还易堵塞血管，引发疼痛、器官损伤。可类比不同手机系统：安卓和 iOS 的代码差异（类似基因差异），决定了手机操作界面、应用生态的不同（类似生物性状差异）；即便同系统，不同型号代码微调，也会导致摄像头像素、续航能力的区别。</div>      
       <div class="section-title">基因编辑的定义</div>
-      <div class="content-text">基因编辑是通过技术手段对基因序列进行"修改、删除、插入"的精准操作，本质是调整遗传信息。相比传统杂交育种，基因编辑如同光标定位修改文档，更加精准。</div>
+      <div class="content-text">通过技术手段对基因序列 “修改、删除、插入”，本质是 “调整遗传信息”。对比传统杂交育种（如水稻育种需多次杂交、数代筛选，效率低且可能带入不良性状），基因编辑像用光标定位修改文档，精准针对目标基因，避免随机改变。</div>
       <div class="section-title">技术发展历程</div>
-      <div class="content-text">• 1970年代：限制性内切酶（初代剪刀）<br>• 2000年代：ZFN/TALEN技术（进阶剪刀）<br>• 2012年：CRISPR-Cas9技术（智能剪刀）</div>
+      <div class="content-text">• 1970年代：限制性内切酶（初代剪刀）：仅能识别并切割特定 DNA 位点，如 EcoRI 只剪 “GAATTC” 序列，适用范围窄，仅能做简单切割。<br>• 2000年代：ZFN/TALEN技术（进阶剪刀）：ZFN 靠锌指蛋白定位、核酸酶切割，可作用更多位点，但设计复杂、成本高；TALEN 定位精度优于 ZFN，但蛋白分子量大、合成难，操作效率低。<br>• 2012年：CRISPR-Cas9技术（智能剪刀）：借 gRNA（向导 RNA）定位、Cas9 酶切割，设计简单（换 gRNA 即可适配不同基因）、成本低、效率高，推动基因编辑普及。</div>
     `,
     video: '<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=464164346&bvid=BV1dL411u7DW&cid=441171372&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe>',
     questions: [
@@ -350,13 +353,30 @@ const courseData = {
     title: "第二章 基因编辑技术（ZFN/TALEN/CRISPR全解析）",
     content: `
       <div class="section-title">ZFN 技术：早期成熟工具</div>
-      <div class="content-text">由“锌指蛋白”和“核酸酶”组成，锌指蛋白负责识别并结合目标基因位点（类似“定位器”），核酸酶负责切断该位点的DNA（类似“剪刀”）。</div>
+      <div class="content-text">
+        • 原理：锌指蛋白（定位器）识别目标基因，核酸酶（剪刀）切断 DNA，细胞修复时实现基因编辑。<br>
+        • 优势：早期用于临床，如尝试干预单基因遗传病。<br>
+        • 局限：锌指蛋白需定制，研发成本高；脱靶风险高，易误剪非目标基因。
+      </div>
+
       <div class="section-title">TALEN 技术：精准进阶工具</div>
-      <div class="content-text">由“TALE蛋白”和“核酸酶”构成，TALE蛋白的氨基酸序列与基因序列存在明确对应关系，可精准识别目标基因。</div>
+      <div class="content-text">
+        • 原理：TALE 蛋白（定位精度优于锌指蛋白）识别目标基因，核酸酶切割 DNA。<br>
+        • 优势：脱靶率低于 ZFN，适配复杂基因位点能力更强。<br>
+        • 局限：TALE 蛋白分子量大，合成、组装难，操作效率低、实验周期长。
+        </div>
+
       <div class="section-title">CRISPR-Cas9 技术：明星工具</div>
-      <div class="content-text">采用“向导RNA（gRNA）+Cas9酶”的组合，gRNA如同“GPS导航”，通过碱基互补配对识别并结合目标基因序列。</div>
-      <div class="section-title">技术升级方向</div>
-      <div class="content-text">• Cas12a酶：剪切位点更灵活，可识别更短的基因序列<br>• 碱基编辑技术：无需切断DNA双链，直接对单个碱基进行修改</div>
+      <div class="content-text">
+        • 原理：gRNA（GPS 导航）通过碱基互补定位目标基因，Cas9 酶（剪刀）切断 DNA；细胞修复时可实现基因删除 / 替换（如提供供体 DNA 则替换，无供体则随机插入 / 缺失致删除）。<br>
+        • 通俗类比：像 Word 操作 ——gRNA 是 “查找” 定位错误文字，Cas9 + 修复机制是 “删除 / 替换” 修正文字。<br>
+        • 优势：设计简单、成本低、剪切效率高，应用最广。<br>  
+        • 局限：gRNA 可能误结合相似序列致脱靶；对高度重复基因片段定位不准。
+      </div>
+
+      <div class="section-title">技术升级方向：降低脱靶率与提升精准度</div>
+      <div class="content-text">• Cas12a 酶：Cas12a 酶是一种与 Cas9 酶类似的核酸酶，但在剪切位点和识别序列方面具有独特的优势。与 Cas9 酶相比，Cas12a 酶的剪切位点更灵活，它能够在目标基因序列的下游进行切割，产生粘性末端，这有利于后续的基因插入和替换操作。同时，Cas12a 酶能够识别更短的基因序列（通常为 TTTN 序列），这使得它在识别目标基因时具有更高的特异性，能够减少与非目标序列的结合，从而降低脱靶风险。此外，Cas12a 酶在切割 DNA 后，还具有持续切割单链 DNA 的活性，这一特性在基因检测等领域也具有潜在的应用价值。<br>• 碱基编辑技术：碱基编辑技术是一种无需切断 DNA 双链，直接对单个碱基进行 “修改” 的基因编辑技术。该技术主要包括胞嘧啶碱基编辑器（CBE）和腺嘌呤碱基编辑器（ABE）。胞嘧啶碱基编辑器能够将 DNA 中的胞嘧啶（C）转化为胸腺嘧啶（T），而腺嘌呤碱基编辑器则能够将腺嘌呤（A）转化为鸟嘌呤（G）。</div>
+
       <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=293541894&bvid=BV11f4y17718&cid=423878000&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
     questions: [
@@ -369,14 +389,18 @@ const courseData = {
   },
   3: {
     title: "第三章 基因编辑的落地应用场景",
-    content: `<div class="section-title">医疗健康领域</div><div class="content-text">• 遗传病治疗：2023年美国批准CRISPR疗法治疗镰状细胞贫血<br>• 癌症治疗：编辑CAR-T细胞增强免疫细胞对癌细胞的识别能力</div>
+    content: `
+      <div class="section-title">医疗健康领域</div>
+      <div class="content-text">• 遗传病治疗：2023 年美国批准 CRISPR 疗法，修正镰状细胞贫血患者致病基因，缓解症状。<br>• 癌症治疗：编辑 CAR-T 细胞，增强其识别癌细胞能力，用于治疗白血病、淋巴瘤等血液肿瘤。<br>• 传染病预防：编辑蚊子基因，使其无法携带疟疾寄生虫，缩小疟疾传播范围。</div>
 
       <div class="section-title">农业领域</div>
-      <div class="content-text">• 抗逆作物：编辑水稻基因增强耐旱、抗虫能力<br>• 营养强化：“黄金大米”增加β-胡萝卜素含量<br>• 延长保鲜：编辑番茄基因延缓腐烂变质</div>
+      <div class="content-text">• 抗逆作物：编辑水稻基因增强耐旱、抗虫能力，减少农药和水资源消耗。<br>• 营养强化：“黄金大米” 通过编辑基因增 β- 胡萝卜素，解决贫困地区维生素 A 缺乏。<br>• 延长保鲜：编辑番茄基因抑制成熟相关蛋白，延缓腐烂，降低产后损耗。</div>
+抗逆作物：
 
       <div class="section-title">科研与生态领域</div>
-      <div class="content-text">• 疾病模型构建：编辑小鼠基因模拟人类疾病<br>• 生态修复：编辑珊瑚基因提高耐高温能力</div>
-      <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=591840961&bvid=BV1Cq4y167oP&cid=446196437&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
+      <div class="content-text">• 疾病模型构建：编辑小鼠基因模拟阿尔茨海默症、糖尿病，为药物研发提供实验载体。<br>• 生态修复：编辑珊瑚基因提高耐高温能力，缓解海洋变暖致珊瑚白化，保护海洋生态。</div>
+
+ <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=591840961&bvid=BV1Cq4y167oP&cid=446196437&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
     questions: [
       { question: "下列哪项属于基因编辑在'医疗健康领域'的应用？", options: ["A. 培育耐干旱的水稻品种", "B. 编辑CAR-T细胞治疗白血病", "C. '黄金大米'补充维生素A", "D. 编辑珊瑚基因提高耐高温能力"], answer: 1, explanation: "编辑CAR-T细胞治疗白血病属于医疗健康领域应用" },
@@ -388,13 +412,15 @@ const courseData = {
   },
   4: {
     title: "第四章 基因编辑的伦理与安全边界",
-    content: `<div class="section-title">安全风险</div><div class="content-text">• 脱靶效应：误剪非目标基因可能引发新疾病<br>• 嵌合效应：编辑胚胎细胞时部分细胞未被编辑</div>
+    content: `
+      <div class="section-title">安全风险</div>
+      <div class="content-text">• 脱靶效应：误剪非目标基因，可能引发新疾病（如细胞癌变）。<br>• 嵌合效应：编辑胚胎时部分细胞未编辑，形成 “嵌合体”，影响治疗效果或致性状不稳定。<br>• 长期影响：对后代遗传的潜在影响不明，可能有跨代风险。</div>
 
       <div class="section-title">伦理争议</div>
-      <div class="content-text">• 生殖细胞vs体细胞：生殖细胞编辑会改变后代基因<br>• 治疗vs增强：基因增强可能导致"基因歧视"</div>
+      <div class="content-text">• 生殖细胞vs体细胞：体细胞编辑（如改免疫细胞）仅影响个体，争议小；生殖细胞编辑（如改胚胎）会传代，可能破坏基因库多样性，多数国家禁临床。<br>• 治疗vs增强：编辑基因治遗传病（如修正致病基因）符合伦理；“基因增强”（如改身高、智商基因）可能致基因歧视，违背平等原则。</div>
 
       <div class="section-title">全球监管</div>
-      <div class="content-text">国际共识禁止生殖细胞编辑用于临床，各国政策存在差异。</div>
+      <div class="content-text">• 国际共识：禁止生殖细胞编辑用于临床。<br>• 各国差异：美国允许体细胞基因治疗商业化；中国严限胚胎基因编辑研究（仅许基础科研且需伦理审批）；欧盟对基因编辑食品严审（证安全才上市）。</div>
       <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=337103505&bvid=BV1mR4y14714&cid=453223121&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
     questions: [
@@ -408,13 +434,15 @@ const courseData = {
   },
   5: {
     title: "第五章 基因编辑的未来展望与挑战",
-    content: `<div class="section-title">技术升级方向</div><div class="content-text">• 新型工具：Cas14酶体积更小，可进入更微小细胞结构<br>• 引导编辑技术：结合gRNA与逆转录酶，实现精准插入/替换</div>
+    content: `
+      <div class="section-title">技术升级方向</div>
+      <div class="content-text">• 新型工具：Cas14酶体积更小，可进入更微小细胞结构<br>• 引导编辑技术：结合gRNA与逆转录酶，实现精准插入/替换，降低脱靶风险</div>
 
       <div class="section-title">跨界融合趋势</div>
-      <div class="content-text">• 基因编辑+AI：AI辅助设计gRNA，提高定位精准度<br>• 合成生物学：设计"人工细胞"合成药物、降解污染物</div>
+      <div class="content-text">• 基因编辑+AI：AI 辅助设计 gRNA（机器学习分析基因序列，提定位精度减脱靶）。<br>• 合成生物学：设计 “人工细胞”（如改微生物基因合成抗癌药、降解塑料），拓展应用边界。</div>
 
       <div class="section-title">普及挑战</div>
-      <div class="content-text">• 技术鸿沟：基因治疗成本高昂，需降低成本<br>• 公众参与：通过科普让大众理解技术原理与风险</div>
+      <div class="content-text">• 技术鸿沟：基因治疗成本高（如 CRISPR 疗法单次超百万美元），需降成本避免 “仅少数人受益”。<br>• 公众参与：通过科普让大众懂原理与风险，推动公众参与伦理决策，防技术偏离社会共识。</div>
       <div class="video-container"><iframe src="//player.bilibili.com/player.html?isOutside=true&aid=299797100&bvid=BV1JF411V7FA&cid=740330356&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;"></iframe></div>
     `,
     questions: [
@@ -429,7 +457,7 @@ const courseData = {
 
 // ===== 页面切换 =====
 function hideAllPages() {
-  const pages = ['homePage', 'chapterPage', 'quizPage', 'resultPage', 'qaPage'];
+  const pages = ['homePage', 'chapterPage', 'quizPage', 'resultPage', 'qaPage', 'globalQuizPage'];
   pages.forEach(id => document.getElementById(id).classList.remove('active'));
 }
 
@@ -451,7 +479,7 @@ function enterMain() {
 }
 
 function showHome() {
-  hideAllPages();
+  hideAllPages();         
   document.getElementById('homePage').classList.add('active');
 }
 
@@ -638,6 +666,7 @@ function submitGlobalQuiz(){
 
 // ===== 真实 Kimi API 接入 =====
 async function submitQuestion() {
+  hideAllPages()
   const question = document.getElementById('questionInput').value.trim();
   if (!question) return alert('请输入问题！');
   const responseDiv = document.getElementById('qaResponse');
