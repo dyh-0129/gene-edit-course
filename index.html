@@ -681,7 +681,6 @@ function submitGlobalQuiz(){
 
 // ===== 真实 Kimi API 接入 =====
 async function submitQuestion() {
-  hideAllPages()
   const question = document.getElementById('questionInput').value.trim();
   if (!question) return alert('请输入问题！');
   const responseDiv = document.getElementById('qaResponse');
