@@ -568,7 +568,7 @@ function submitQuiz() {
         <strong>第${i + 1}题：</strong>${q.question}<br>
         <strong>你的答案：</strong>${q.options[userAnswers[i]]}<br>
         <strong>正确答案：</strong>${q.options[q.answer]}<br>
-        ${!isCorrect ? `<strong>解析：</strong>${q.explanation}` : ''}
+        <strong>解析:</strong>${q.explanation}
       </div>
     `;
   });
