@@ -222,6 +222,7 @@
       <li class="nav-item"><a class="nav-link" onclick="showGlobalQuiz()">综合测试</a></li>
       <li class="nav-item"><a class="nav-link" onclick="showQA()">智能问答</a></li>
       <li class="nav-item"><a class="nav-link" onclick="openPubMedSearch()">PubMed 文献搜索</a></li>
+      <li class="nav-item"><a class="nav-link" onclick="showControduct()">图文实验</a></li>
     </ul>
   </div>
 </nav>
@@ -258,7 +259,7 @@
         <div class="feature-title">文献检索</div>
         <p>搜索关键词查询基因编辑前沿文章</p>
       </div>
-      <div class="feature-card" onclick="openPubMedSearch()">
+      <div class="feature-card" onclick="showControduct()">
         <div class="feature-icon">📺</div>
         <div class="feature-title">图文学习</div>
         <p>通过视频全面了解本网站使用方法</p>
@@ -327,6 +328,16 @@
   </div>
 </div>
  
+<!-- 图文实验 -->
+<div id="controduction" class="container page">
+  <h1 class="chapter-title">图文实验</h1>
+  <p style=" text-align: center; font-size: 1em; margin-bottom: 20px; color: #444;">通过图文实验来仔细了解本网站吧！</p>
+  <div class="video-container" id="videoContainer"></div>
+    <iframe src="//player.bilibili.com/player.html?isOutside=true&aid=115360908972797&bvid=BV14R43zbEbp&cid=33017892092&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%;height:370px;border-radius:12px;">
+    </iframe>
+  </div>
+</div>
+
 <script>
 // 自动轮播导览页
 let currentSlide = 1;
@@ -472,7 +483,7 @@ const courseData = {
 
 // ===== 页面切换 =====
 function hideAllPages() {
-  const pages = ['homePage', 'chapterPage', 'quizPage', 'resultPage', 'qaPage', 'globalQuizPage'];
+  const pages = ['homePage', 'chapterPage', 'quizPage', 'resultPage', 'qaPage', 'globalQuizPage','controduction'];
   pages.forEach(id => document.getElementById(id).classList.remove('active'));
 }
 
@@ -732,6 +743,11 @@ function goPubMed(){
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape') closePubMedSearch();
 });
+
+function showControduct() {
+  hideAllPages();
+  document.getElementById('controduction').classList.add('active');
+}
 
 </script>
 </body>
